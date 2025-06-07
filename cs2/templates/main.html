@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ name or "Карты CS:GO" }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #e6e9f0, #eef1f5);
+            padding: 40px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            min-height: 100vh;
+        }
+
+        .card {
+            width: 220px;
+            height: 220px;
+            border-radius: 20px;
+            background-size: cover;
+            background-position: center;
+            box-shadow:
+                inset -4px -4px 10px rgba(255, 255, 255, 0.7),
+                inset 4px 4px 12px rgba(0, 0, 0, 0.15),
+                0 8px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow:
+                inset -2px -2px 8px rgba(255, 255, 255, 0.6),
+                inset 2px 2px 10px rgba(0, 0, 0, 0.15),
+                0 12px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .card .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            text-align: center;
+        }
+
+        .card .overlay .card-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                width: 90vw;
+                height: 90vw;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/dust2" class="card" style="background-image: url('https://csdb.gg/wp-content/uploads/2024/11/Map_icon_de_dust2.webp');">
+        <div class="overlay">
+            <div class="card-name">Dust 2</div>
+        </div>
+    </a>
+
+    <a href="/inferno" class="card" style="background-image: url('https://ih1.redbubble.net/image.5283983722.1396/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg');">
+        <div class="overlay">
+            <div class="card-name">Inferno</div>
+        </div>
+    </a>
+
+    <a href="/mirage" class="card" style="background-image: url('https://pub-5f12f7508ff04ae5925853dee0438460.r2.dev/data/preview/4798.png');">
+        <div class="overlay">
+            <div class="card-name">Mirage</div>
+        </div>
+    </a>
+
+</body>
+</html>
