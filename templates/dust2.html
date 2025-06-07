@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SmokeHalper - Dust2</title>
+<style>
+  /* Reset и базовые стили */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  h1 {
+    color: #1E90FF;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 5px rgba(30,144,255,0.8);
+  }
+
+  /* Контейнер изображения с кнопкой */
+  .image-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+    background-color: #222;
+    user-select: none;
+  }
+
+  .image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  /* Кнопка-плашка на изображении */
+  .overlay-button {
+    position: absolute;
+    top: 35%;
+    left: 43%;
+    color: white;
+    font-size: 8px;
+    font-weight: 700;
+    background: linear-gradient(135deg, rgba(255,0,0,0.85), rgba(200,0,0,0.9));
+    border: none;
+    padding: 8px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+    user-select: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(255,0,0,0.6);
+  }
+
+  .overlay-button:hover,
+  .overlay-button:focus {
+    background: linear-gradient(135deg, #ff3b3b, #cc0000);
+    outline: none;
+  }
+
+  /* Модалка */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.85);
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    animation: fadeIn 0.3s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  /* Контент модалки */
+  .modal-content {
+    position: relative;
+    background-color: #000;
+    padding: 0;
+    width: 80vw;  /* 80% от ширины окна браузера */
+    max-width: 1280px;  /* максимальная ширина — например FullHD */
+    aspect-ratio: 16 / 9; /* соотношение сторон 16:9 */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+  /* Видео с адаптивным размером */
+  .modal-content video {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    object-fit: contain; /* сохраняет соотношение сторон, показывает все видео */
+    background-color: black;
+}
+
+  /* Кнопка закрытия */
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    user-select: none;
+    transition: color 0.3s ease;
+    z-index: 20;
+    filter: drop-shadow(0 0 2px black);
+  }
+
+  .close-btn:hover,
+  .close-btn:focus {
+    color: #ff4444;
+    outline: none;
+  }
+
+  /* Подсказка под кнопкой на мобилках */
+  @media (max-width: 480px) {
+    .overlay-button {
+      top: 200px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      padding: 14px 20px;
+    }
+
+    .modal-content {
+      max-width: 95vw;
+      max-height: 60vh;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <h1>Dust2</h1>
+
+  <div class="image-container" aria-label="Map Dust2 with smoke button">
+    <img src="https://steamuserimages-a.akamaihd.net/ugc/2495634406236607482/842C9B36479CBA41E9B36426842F5E24DB65BDE3/" alt="Dust2 Map" />
+    <button class="overlay-button" id="openModalBtn" aria-haspopup="dialog" aria-controls="videoModal" aria-expanded="false" title="Watch smoke video">SMOKE</button>
+  </div>
+
+  <div id="videoModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
+    <div class="modal-content">
+      <button class="close-btn" id="closeModalBtn" aria-label="Close video modal">&times;</button>
+      <video id="localVideo" controls preload="metadata" playsinline >
+        <source src="{{ url_for('static', filename='video/door_mid.mp4') }}" type="video/mp4"  />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+<script>
+  const modal = document.getElementById('videoModal');
+  const openBtn = document.getElementById('openModalBtn');
+  const closeBtn = document.getElementById('closeModalBtn');
+  const video = document.getElementById('localVideo');
+
+  openBtn.addEventListener('click', () => {
+    modal.style.display = 'flex';
+    openBtn.setAttribute('aria-expanded', 'true');
+    video.currentTime = 0;
+    video.play().catch(() => {});  // Воспроизведение видео с игнорированием ошибок автозапуска
+    modal.focus();
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+
+  // Закрытие при клике вне модального окна
+  window.addEventListener('click', (event) => {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Закрытие и пауза видео
+  function closeModal() {
+    modal.style.display = 'none';
+    openBtn.setAttribute('aria-expanded', 'false');
+    video.pause();
+    video.currentTime = 0;
+  }
+
+  // Закрытие по ESC
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && modal.style.display === 'flex') {
+      closeModal();
+    }
+  });
+</script>
+
+</body>
+</html>

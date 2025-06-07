@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ site_name or "SmokeHalper - Регистрация" }}</title>
+    <style>
+        /* Базовые стили страницы */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Контейнер для формы */
+        .container {
+            background: #fff;
+            padding: 30px 35px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            width: 360px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 28px;
+            color: #2c3e50;
+        }
+
+        /* Форма регистрации */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 1.8px solid #ccc;
+            border-radius: 8px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #28a745;
+            outline: none;
+            box-shadow: 0 0 6px rgba(40, 167, 69, 0.5);
+        }
+
+        button[type="submit"] {
+            padding: 13px 0;
+            background-color: #28a745;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #1e7e34;
+        }
+
+        /* Сообщения об ошибках и успехе */
+        p.message {
+            font-weight: 600;
+            margin-bottom: 15px;
+            user-select: none;
+        }
+
+        p.error {
+            color: #e74c3c;
+        }
+
+        p.success {
+            color: #28a745;
+        }
+
+        /* Ссылка на вход */
+        p.success a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: text-decoration 0.3s ease;
+        }
+
+        p.success a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Регистрация</h1>
+
+        {% if register_error %}
+            <p class="message error" role="alert">{{ register_error }}</p>
+        {% endif %}
+        {% if success %}
+            <p class="message success" role="alert">{{ success }}</p>
+            <p><a href="/">Перейти к входу</a></p>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('register') }}">
+            <input type="text" name="name" placeholder="Логин" required autocomplete="username" />
+            <input type="password" name="password" placeholder="Пароль" required autocomplete="new-password" />
+            <button type="submit">Регистрация</button>
+        </form>
+    </div>
+</body>
+</html>
